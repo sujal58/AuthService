@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import java.security.Key;
@@ -18,6 +19,17 @@ public class JwtService {
 
     public String extractUsername(String token){
         return extractClaim(token, Claims::getSubject);
+    }
+
+
+    public String getTokenFromHeader(HttpServletRequest request){
+        String bearerToken = request.getHeader("Authorization");
+
+        if(bearerToken != null && bearerToken.startsWith("Bearer ")){
+            return bearerToken.substring(7); //Remove Bearer prefix from token
+        }
+
+        return null;
     }
 
     public boolean isTokenExpired(String token){

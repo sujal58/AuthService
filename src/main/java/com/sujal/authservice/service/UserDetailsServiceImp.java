@@ -14,13 +14,13 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 
-public class UserDetailsServiceImplementation implements UserDetailsService {
+public class UserDetailsServiceImp implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
 
 
