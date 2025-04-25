@@ -1,15 +1,14 @@
 package com.sujal.authservice.service;
-
 import com.sujal.authservice.entities.UserInfo;
 import com.sujal.authservice.entities.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+
 
 public class CustomUserDetails extends UserInfo implements UserDetails
 {
