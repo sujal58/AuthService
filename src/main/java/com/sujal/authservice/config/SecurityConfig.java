@@ -2,7 +2,6 @@ package com.sujal.authservice.config;
 
 import com.sujal.authservice.auth.JwtAuthFilter;
 import com.sujal.authservice.service.UserDetailsServiceImp;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,17 +33,13 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain CustomSecurityFilterChain(HttpSecurity http) throws Exception{
         return http.
                 csrf(CsrfConfigurer::disable)
                 .cors(CorsConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers(
-                                        "/auth/v1/login",
-                                        "/auth/v1/refreshToken",
-                                        "/auth/v1/signup"
-                                ).permitAll()
+                                .requestMatchers("/auth/v1/**").permitAll()
                                 .anyRequest().authenticated()
                         )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

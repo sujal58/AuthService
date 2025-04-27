@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
@@ -41,14 +42,19 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     public Boolean signupUser(UserInfoDto userInfoDto){
+        try{
+            if(Objects.nonNull(checkIfUserAlreadyExist(userInfoDto))){
+                return false;
+            }
+            userInfoDto.setPassword(passwordEncoder.encode(userInfoDto.getPassword()));
+            String userId = UUID.randomUUID().toString();
 
-        if(Objects.nonNull(checkIfUserAlreadyExist(userInfoDto))){
-            return false;
+            UserInfo userToSave = new UserInfo(userId,userInfoDto.getUsername(), userInfoDto.getPassword(), new HashSet<>());
+            userRepository.save(userToSave);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
-        userInfoDto.setPassword(passwordEncoder.encode(userInfoDto.getPassword()));
-        String userId = UUID.randomUUID().toString();
-
-        userRepository.save(new UserInfo(userId,userInfoDto.getUsername(), userInfoDto.getPassword(), new HashSet<>()));
         return true;
     }
 }

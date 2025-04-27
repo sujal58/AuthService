@@ -6,15 +6,22 @@ import com.sujal.authservice.request.RefreshTokenReqDto;
 import com.sujal.authservice.response.AuthResponseDto;
 import com.sujal.authservice.service.JwtService;
 import com.sujal.authservice.service.RefreshTokenService;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Key;
+
+@RestController
 public class TokenController {
 
     @Autowired
@@ -55,5 +62,10 @@ public class TokenController {
                                     .accessToken(accessToken)
                                     .token(refreshTokenReqDto.getToken()).build();
                         }).orElseThrow(()-> new RuntimeException("Refresh token not found...."));
+    }
+
+    @GetMapping("/secretkey")
+    public Key generateSecretKey(){
+        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 }
